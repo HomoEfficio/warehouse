@@ -167,11 +167,11 @@ A가 B에게 만원을 보내는 상황을 생각해보자. A가 은행 사이�
 
 ![Imgur](http://i.imgur.com/AraOlPF.png)
 
-새로 만들어질 블록은 아래 그림과 같이 현재 마지막 블록인 파란색 P블록의 다음에 추가될 예정이다.
+새로 만들어질 블록은 다음 그림(출처: Mastering Bitcoin - http://chimera.labs.oreilly.com/books/1234000001802/ch08.html#forks)과 같이 현재 마지막 블록인 파란색 P블록의 다음에 추가될 예정이다.
 
 ![출처: http://chimera.labs.oreilly.com/books/1234000001802/ch08.html#forks](http://orm-chimera-prod.s3.amazonaws.com/1234000001802/images/msbt_0802.png)
 
-이 때 캐나다의 노드와 호주의 노드가 거의 동시에 `nonce` 값을 찾아서 블록을 성공적으로 생성했다. 캐나다의 노드가 생성한 블록을 A블록(빨간색)이라 하고, 호주의 노드가 생성한 블록을 B블록(녹색)이라하면, 생성 후 전파 과정은 다음과 같다.
+이 때 캐나다의 노드와 호주의 노드가 거의 동시에 `nonce` 값을 찾아서 블록을 성공적으로 생성했다. 캐나다의 노드가 생성한 블록을 A블록(빨간색)이라 하고, 호주의 노드가 생성한 블록을 B블록(녹색)이라하면, 생성 후 전파 과정은 다음 그림(출처: Mastering Bitcoin - http://chimera.labs.oreilly.com/books/1234000001802/ch08.html#forks)과 같다.
 
 ![http://chimera.labs.oreilly.com/books/1234000001802/ch08.html#forks](http://orm-chimera-prod.s3.amazonaws.com/1234000001802/images/msbt_0804.png)
 
@@ -179,7 +179,7 @@ A가 B에게 만원을 보내는 상황을 생각해보자. A가 은행 사이�
 
 ### 블록 체인의 분기
 
-포르투갈에 있는 노드에는 A블록이 먼저 전파된 후에 B블록이 전파파되었다. 포르투갈 노드에서는 늦게 도착한 B블록은 무시된다. 러시아에 있는 노드도 나름 열심히 `nonce` 값을 구하고 있었으나, 구하기 전에 아쉽게도 B블록을 먼저 전달받아서 B블록을 검증한 후 P블록 다음에 B블록을 추가했다. B블록에 이을 새로운 블록의 `nonce`값을 구하기 시작하고, 잠시 후 A블록을 전달받았다. 늦게 도착한 A블록은 러시아 노드에서는 무시된다. 이번에는 러시아 노드가 가장 먼저 `nonce` 값을 구해서 B블록 다음에 새로 X블록(핑크색)을 생성해서 B블록 다음에 X블록을 추가하고 아래와 같이 인접 노드에 전파했다. 
+포르투갈에 있는 노드에는 A블록이 먼저 전파된 후에 B블록이 전파파되었다. 포르투갈 노드에서는 늦게 도착한 B블록은 무시된다. 러시아에 있는 노드도 나름 열심히 `nonce` 값을 구하고 있었으나, 구하기 전에 아쉽게도 B블록을 먼저 전달받아서 B블록을 검증한 후 P블록 다음에 B블록을 추가했다. B블록에 이을 새로운 블록의 `nonce`값을 구하기 시작하고, 잠시 후 A블록을 전달받았다. 늦게 도착한 A블록은 러시아 노드에서는 무시된다. 이번에는 러시아 노드가 가장 먼저 `nonce` 값을 구해서 B블록 다음에 새로 X블록(핑크색)을 생성해서 B블록 다음에 X블록을 추가하고 다음 그림(출처: Mastering Bitcoin - http://chimera.labs.oreilly.com/books/1234000001802/ch08.html#forks)과 같이 인접 노드에 전파했다. 
 
 ![http://chimera.labs.oreilly.com/books/1234000001802/ch08.html#forks](http://orm-chimera-prod.s3.amazonaws.com/1234000001802/images/msbt_0805.png)
 
