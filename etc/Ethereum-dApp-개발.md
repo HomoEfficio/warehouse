@@ -214,7 +214,7 @@ genesis 파일에서 사용된 `gasLimit`은 블록에서의 `gasLimit`을 의�
 
 ### alloc
 
-원조 블록 생성 시 특정 계좌에 정해진 액수의 이더를 지급할 때 사용한다.
+원조 블록 생성 시 특정 계정에 정해진 액수의 이더를 지급할 때 사용한다. 계정 주소를 key로 해서 최초 지급액을 `balance`에 지정한다. 
 
 ## Genesis Block의 생성
 
@@ -250,6 +250,8 @@ drwx------  4 1003604  staff  136  8 26 10:42 keystore/
 원조 블록이 생성되었으므로 이제 이 원조 블록에 새 블록을 이어 붙이면서 블록 체인을 구동할 준비가 되었다. `geth` 명령으로 블록 체인을 구동할 수 있다.
 
 옵션에 대한 설명은 다음과 같다.
+
+%%% 구동 옵션 설명 %%%
 
 - `--datadir private-chain`: 
 - `--ethash.dagdir private-chain/.ethash`:
