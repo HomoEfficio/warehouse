@@ -2,7 +2,7 @@
 
 거대한 분산 장부로서 기록의 멸실이나 위/변조 발생 가능성을 최소화시켜서 은행, 기업, 기관, 정부 등의 중앙 집중적인 제3자의 보증 없이도 당사자끼리 직접 신뢰할 수 있게 해주는 블록 체인 위에 스마트 계약(Smart Contract)를 얹고 실행할 수 있게 해주는 dApp(Decentralized Application)을 만들어 보자.
 
-블록 체인에 대한 기본적인 구동 원리는 %%%를 참고하고, dApp을 이미 만들어져 있는 Ethereum의 TestNet 상에서 만들어 볼 수도 있지만, 여기에서는 아예 바닥부터 시작해서 나만의 Private Ethereum 블록 체인을 만들고, 그 위에서 dApp을 개발하는 방식으로 진행한다. 크게 다음의 순서대로 간략하게 다루고자 한다.
+블록 체인에 대한 기본적인 구동 원리는 %%%를 참고하고, dApp을 이미 만들어져 있는 Ethereum의 TestNet 상에서 만들어 볼 수도 있지만, 여기에서는 아예 바닥부터 시작해서 나만의 Private Ethereum 블록 체인을 만들고, 그 위에서 dApp을 개발하는 방식으로 진행 한다. 크게 다음의 순서대로 간략하게 다루고자 한다.
 
 1. 개발 환경 구성 및 확인
 2. 계정(Account) 생성 및 확인
@@ -24,7 +24,6 @@ https://golang.org/dl/ 에서 Apple macOS 용 설치 파일을 다운로드 받�
 아래와 같이 설치 버전을 확인할 수 있다.
 
 ```
-homo.efficio ~/study/ethereum
 🍺  go version
 go version go1.8.3 darwin/amd64
 ```
@@ -103,15 +102,15 @@ GOROOT=/usr/local/go
 
 ## 개발 디렉토리 지정
 
-`~/study/ethereum`을 최상위 기본 디렉토리로 하고, 그 아래에 `private-chain` 디렉토리를 만들어서 여기에 블록 체인 관련 데이터를 저장한다.
+`~/study/ethereum`을 최상위 기본 디렉토리로 하고, 그 아래에 `private-chain` 디렉토리를 만들어서 여기에 블록 체인 관련 모든 데이터를 저장해서 `private-chain`를 일종의 sandbox로 만들어서 작업한다.
 
 ```
 homo.efficio ~/study/ethereum
 🍺  ll
 total 0
-drwxr-xr-x  3 1003604  staff  102  8 20 22:55 ./
+drwxr-xr-x  3 1003604  staff  102  8 26 10:40 ./
 drwxr-xr-x  8 1003604  staff  272  8 12 10:48 ../
-drwxr-xr-x  2 1003604  staff   68  8 20 22:55 private-chain/
+drwxr-xr-x  2 1003604  staff   68  8 26 10:40 private-chain/
 ```
 
 # 계정 생성 및 확인
@@ -121,11 +120,11 @@ drwxr-xr-x  2 1003604  staff   68  8 20 22:55 private-chain/
 ```
 homo.efficio ~/study/ethereum
 🍺  geth account new --datadir private-chain/
-WARN [08-20|22:59:18] No etherbase set and no accounts found as default
+WARN [08-26|10:41:24] No etherbase set and no accounts found as default
 Your new account is locked with a password. Please give a password. Do not forget this password.
 Passphrase:
 Repeat passphrase:
-Address: {9cd6341e4d4de6651b0a498e28a90b1538695a8b}
+Address: {4f27ca4553225cfdddb96fdb89346e7565e61627}
 ```
 
 `Address`라고 표시되어 있는 내용이 실제 이더를 주고 받을 때 사용되는, 은행으로 치면 계좌 번호 같은 공개 주소다. 비밀번호를 지정해서 계정 생성을 마치면 생성된 계정 정보는 `--datadir private-chain/` 옵션에 의해 아래와 같이 `private-chain/keystore/`에 생성된다. 옵션을 주지 않으면 계정 데이터는 디폴트로 `~/Library/Ethereum/keystore/`에 생성된다.
@@ -134,9 +133,9 @@ Address: {9cd6341e4d4de6651b0a498e28a90b1538695a8b}
 homo.efficio ~/study/ethereum
 🍺  ll private-chain/keystore/
 total 8
-drwx------  3 1003604  staff  102  8 20 22:59 ./
-drwxr-xr-x  3 1003604  staff  102  8 20 22:59 ../
--rw-------  1 1003604  staff  491  8 20 22:59 UTC--2017-08-20T13-59-24.809325230Z--9cd6341e4d4de6651b0a498e28a90b1538695a8b
+drwx------  3 1003604  staff  102  8 26 10:41 ./
+drwxr-xr-x  3 1003604  staff  102  8 26 10:41 ../
+-rw-------  1 1003604  staff  491  8 26 10:41 UTC--2017-08-26T01-41-31.092111708Z--4f27ca4553225cfdddb96fdb89346e7565e61627
 ```
 
 계정을 하나 더 생성한다.
@@ -147,7 +146,7 @@ homo.efficio ~/study/ethereum
 Your new account is locked with a password. Please give a password. Do not forget this password.
 Passphrase:
 Repeat passphrase:
-Address: {b81cd479e1660897e00375142ee12cd66bb3087d}
+Address: {8128ff5a55370dc9555e5c18b716050bdf2c8440}
 ```
 
 생성된 계정은 다음과 같이 `geth account list` 명령으로도 확인할 수 있다.
@@ -155,8 +154,8 @@ Address: {b81cd479e1660897e00375142ee12cd66bb3087d}
 ```
 homo.efficio ~/study/ethereum
 🍺  geth account list --datadir private-chain/
-Account #0: {9cd6341e4d4de6651b0a498e28a90b1538695a8b} keystore:///Users/1003604/study/ethereum/private-chain/keystore/UTC--2017-08-20T13-59-24.809325230Z--9cd6341e4d4de6651b0a498e28a90b1538695a8b
-Account #1: {b81cd479e1660897e00375142ee12cd66bb3087d} keystore:///Users/1003604/study/ethereum/private-chain/keystore/UTC--2017-08-20T14-05-17.816233442Z--b81cd479e1660897e00375142ee12cd66bb3087d
+Account #0: {4f27ca4553225cfdddb96fdb89346e7565e61627} keystore:///Users/1003604/study/ethereum/private-chain/keystore/UTC--2017-08-26T01-41-31.092111708Z--4f27ca4553225cfdddb96fdb89346e7565e61627
+Account #1: {8128ff5a55370dc9555e5c18b716050bdf2c8440} keystore:///Users/1003604/study/ethereum/private-chain/keystore/UTC--2017-08-26T01-42-30.477728967Z--8128ff5a55370dc9555e5c18b716050bdf2c8440
 ```
 
 # Genesis Block의 생성 및 블록 체인 활성화
@@ -176,8 +175,8 @@ Account #1: {b81cd479e1660897e00375142ee12cd66bb3087d} keystore:///Users/1003604
     "difficulty": "0x400000",
     "gasLimit": "2100000",
     "alloc": {
-        "9cd6341e4d4de6651b0a498e28a90b1538695a8b": { "balance": "100000000" },
-        "b81cd479e1660897e00375142ee12cd66bb3087d": { "balance": "300000000" }
+        "4f27ca4553225cfdddb96fdb89346e7565e61627": { "balance": "100000000" },
+        "8128ff5a55370dc9555e5c18b716050bdf2c8440": { "balance": "300000000" }
     }
 }
 ```
@@ -199,7 +198,7 @@ Account #1: {b81cd479e1660897e00375142ee12cd66bb3087d} keystore:///Users/1003604
 
 ### difficulty
 
-블록 생성(채굴) 난이도를 지정한다. 큰 값을 지정하면 블록 생성에 오랜 시간이 걸리며 Mac Book Pro 13 기준으로 `0x400000`으로 지정하면 대략 30초 ~ 1분 사이에 블록이 생성되므로 테스트 용으로 적합하다.
+블록 생성(채굴) 난이도를 지정한다. 큰 값을 지정하면 블록 생성에 오랜 시간이 걸리며 Mac Book Pro 13 기준으로 `0x400000`으로 지정하면 대략 30초 ~ 1분 사이에 블록이 생성되므로 테스트 용으로 적당하다.
 
 ### gasLimit
 
@@ -219,17 +218,17 @@ genesis 파일에서 사용된 `gasLimit`은 블록에서의 `gasLimit`을 의�
 
 ## Genesis Block의 생성
 
-genesis 파일 작성이 완료되면 `geth init` 명령으로 원조 블록을 생성할 수 있다.
+genesis 파일 작성이 완료되면 `geth init` 명령으로 원조 블록(genesis block)을 생성할 수 있다.
 
 ```
 homo.efficio ~/study/ethereum
 🍺  geth init custom-genesis.json --datadir private-chain/
-INFO [08-21|00:41:15] Allocated cache and file handles         database=/Users/1003604/study/ethereum/private-chain/geth/chaindata cache=16 handles=16
-INFO [08-21|00:41:15] Writing custom genesis block
-INFO [08-21|00:41:15] Successfully wrote genesis state         database=chaindata                                                  hash=ac90de…b5abe9
-INFO [08-21|00:41:15] Allocated cache and file handles         database=/Users/1003604/study/ethereum/private-chain/geth/lightchaindata cache=16 handles=16
-INFO [08-21|00:41:15] Writing custom genesis block
-INFO [08-21|00:41:15] Successfully wrote genesis state         database=lightchaindata                                                  hash=ac90de…b5abe9
+INFO [08-26|10:48:33] Allocated cache and file handles         database=/Users/1003604/study/ethereum/private-chain/geth/chaindata cache=16 handles=16
+INFO [08-26|10:48:33] Writing custom genesis block
+INFO [08-26|10:48:33] Successfully wrote genesis state         database=chaindata                                                  hash=11966f…3d3ab9
+INFO [08-26|10:48:33] Allocated cache and file handles         database=/Users/1003604/study/ethereum/private-chain/geth/lightchaindata cache=16 handles=16
+INFO [08-26|10:48:33] Writing custom genesis block
+INFO [08-26|10:48:33] Successfully wrote genesis state         database=lightchaindata                                                  hash=11966f…3d3ab9
 ```
 
 원조 블록은 물리적으로 `geth` 디렉토리에 생성된다.
@@ -238,13 +237,13 @@ INFO [08-21|00:41:15] Successfully wrote genesis state         database=lightcha
 homo.efficio ~/study/ethereum
 🍺  ll private-chain/
 total 0
-drwxr-xr-x  4 1003604  staff  136  8 21 00:41 ./
-drwxr-xr-x  4 1003604  staff  136  8 21 00:40 ../
-drwxr-xr-x  4 1003604  staff  136  8 21 00:41 geth/
-drwx------  4 1003604  staff  136  8 20 23:05 keystore/
+drwxr-xr-x  4 1003604  staff  136  8 26 10:48 ./
+drwxr-xr-x  4 1003604  staff  136  8 26 10:44 ../
+drwxr-xr-x  4 1003604  staff  136  8 26 10:48 geth/
+drwx------  4 1003604  staff  136  8 26 10:42 keystore/
 ```
 
-나중에 블록 체인을 물리적으로 다른 곳으로 옮길 때는 블록 체인 정보가 저장되는 `geth` 디렉토리와 계정 정보가 저장되는 `keystore` 디렉토리를 포함하고 있는 디렉토리(여기에서는 `private-chain`)를 옮기면 된다.
+나중에 블록 체인을 물리적으로 다른 곳으로 옮길 때는 블록 체인 정보가 저장되는 `geth` 디렉토리와 계정 정보가 저장되는 `keystore` 디렉토리를 포함하고 있는 디렉토리(여기에서는 sandbox인 `private-chain`)를 옮기면 된다.
 
 ## 블록 체인 활성화
 
@@ -257,6 +256,20 @@ drwx------  4 1003604  staff  136  8 20 23:05 keystore/
 
 ...
 
+geth --datadir private-chain \
+  --ethash.dagdir private-chain/.ethash \
+  --identity "MyEthNode01" \
+  --mine \
+  --minerthreads 4 \
+  --etherbase 4f27ca4553225cfdddb96fdb89346e7565e61627 \
+  --networkid 23 \
+  --nodiscover \
+  --maxpeers 0 \
+  --rpc \
+  --rpcapi "db,eth,net,web3" \
+  --rpccorsdomain "*"
+
+
 ```
 homo.efficio ~/study/ethereum
 🍺  geth --datadir private-chain \
@@ -264,47 +277,49 @@ homo.efficio ~/study/ethereum
 >   --identity "MyEthNode01" \
 >   --mine \
 >   --minerthreads 4 \
->   --etherbase 9cd6341e4d4de6651b0a498e28a90b1538695a8b \
+>   --etherbase 4f27ca4553225cfdddb96fdb89346e7565e61627 \
 >   --networkid 23 \
 >   --nodiscover \
 >   --maxpeers 0 \
 >   --rpc \
 >   --rpcapi "db,eth,net,web3" \
 >   --rpccorsdomain "*"
-INFO [08-21|00:57:50] Starting peer-to-peer node               instance=Geth/MyEthNode01/v1.7.0-unstable-6ca59d98/darwin-amd64/go1.8.3
-INFO [08-21|00:57:50] Allocated cache and file handles         database=/Users/1003604/study/ethereum/private-chain/geth/chaindata cache=128 handles=1024
-WARN [08-21|00:57:50] Upgrading database to use lookup entries
-INFO [08-21|00:57:50] Database deduplication successful        deduped=0
-INFO [08-21|00:57:50] Initialised chain configuration          config="{ChainID: 23 Homestead: 0 DAO: <nil> DAOSupport: false EIP150: <nil> EIP155: 0 EIP158: 0 Metropolis: <nil> Engine: unknown}"
-INFO [08-21|00:57:50] Disk storage enabled for ethash caches   dir=/Users/1003604/study/ethereum/private-chain/geth/ethash count=3
-INFO [08-21|00:57:50] Disk storage enabled for ethash DAGs     dir=private-chain/.ethash                                   count=2
-WARN [08-21|00:57:50] Upgrading db log bloom bins
-INFO [08-21|00:57:50] Bloom-bin upgrade completed              elapsed=71.302µs
-INFO [08-21|00:57:50] Initialising Ethereum protocol           versions="[63 62]" network=23
-INFO [08-21|00:57:50] Loaded most recent local header          number=0 hash=ac90de…b5abe9 td=4194304
-INFO [08-21|00:57:50] Loaded most recent local full block      number=0 hash=ac90de…b5abe9 td=4194304
-INFO [08-21|00:57:50] Loaded most recent local fast block      number=0 hash=ac90de…b5abe9 td=4194304
-INFO [08-21|00:57:50] Regenerated local transaction journal    transactions=0 accounts=0
-INFO [08-21|00:57:50] Starting P2P networking
-INFO [08-21|00:57:50] RLPx listener up                         self="enode://aad004f194f5a9d6fd557969c95c1ab15daeefd8dc53e946db8377eca51277365274c7fdd03cb512261a3ae5ca4617c2c01fd1663f989b55607fc62c836b183c@[::]:30303?discport=0"
-INFO [08-21|00:57:50] IPC endpoint opened: /Users/1003604/study/ethereum/private-chain/geth.ipc
-INFO [08-21|00:57:50] HTTP endpoint opened: http://127.0.0.1:8545
-INFO [08-21|00:57:50] Transaction pool price threshold updated price=18000000000
-INFO [08-21|00:57:50] Starting mining operation
-INFO [08-21|00:57:50] Commit new mining work                   number=1 txs=0 uncles=0 elapsed=157.156µs
-INFO [08-21|00:57:52] Mapped network port                      proto=tcp extport=30303 intport=30303 interface="UPNP IGDv1-IP1"
-INFO [08-21|00:57:52] Generating DAG in progress               epoch=0 percentage=0 elapsed=1.635s
-INFO [08-21|00:57:54] Generating DAG in progress               epoch=0 percentage=1 elapsed=3.214s
-INFO [08-21|00:57:55] Generating DAG in progress               epoch=0 percentage=2 elapsed=4.840s
+INFO [08-26|10:51:43] Starting peer-to-peer node               instance=Geth/MyEthNode01/v1.7.0-unstable-bf1e2631/darwin-amd64/go1.8.3
+INFO [08-26|10:51:43] Allocated cache and file handles         database=/Users/1003604/study/ethereum/private-chain/geth/chaindata cache=128 handles=1024
+WARN [08-26|10:51:43] Upgrading database to use lookup entries
+INFO [08-26|10:51:43] Database deduplication successful        deduped=0
+INFO [08-26|10:51:43] Initialised chain configuration          config="{ChainID: 23 Homestead: 0 DAO: <nil> DAOSupport: false EIP150: <nil> EIP155: 0 EIP158: 0 Metropolis: <nil> Engine: unknown}"
+INFO [08-26|10:51:43] Disk storage enabled for ethash caches   dir=/Users/1003604/study/ethereum/private-chain/geth/ethash count=3
+INFO [08-26|10:51:43] Disk storage enabled for ethash DAGs     dir=private-chain/.ethash                                   count=2
+WARN [08-26|10:51:43] Upgrading db log bloom bins
+INFO [08-26|10:51:43] Bloom-bin upgrade completed              elapsed=138.189µs
+INFO [08-26|10:51:43] Initialising Ethereum protocol           versions="[63 62]" network=23
+INFO [08-26|10:51:43] Loaded most recent local header          number=0 hash=11966f…3d3ab9 td=4194304
+INFO [08-26|10:51:43] Loaded most recent local full block      number=0 hash=11966f…3d3ab9 td=4194304
+INFO [08-26|10:51:43] Loaded most recent local fast block      number=0 hash=11966f…3d3ab9 td=4194304
+INFO [08-26|10:51:43] Regenerated local transaction journal    transactions=0 accounts=0
+INFO [08-26|10:51:43] Starting P2P networking
+INFO [08-26|10:51:43] RLPx listener up                         self="enode://c447ea2f047334fb18559c252976a484ba4935a692996733a5731b3d6982bbdf494e4b1f0a995a53cefa4124523476e5b36de397d8e15cfb694c556efd73c80b@[::]:30303?discport=0"
+INFO [08-26|10:51:43] HTTP endpoint opened: http://127.0.0.1:8545
+INFO [08-26|10:51:43] IPC endpoint opened: /Users/1003604/study/ethereum/private-chain/geth.ipc
+INFO [08-26|10:51:43] Transaction pool price threshold updated price=18000000000
+INFO [08-26|10:51:43] Starting mining operation
+INFO [08-26|10:51:43] Commit new mining work                   number=1 txs=0 uncles=0 elapsed=453.968µs
+INFO [08-26|10:51:45] Mapped network port                      proto=tcp extport=30303 intport=30303 interface="UPNP IGDv1-IP1"
+INFO [08-26|10:51:45] Generating DAG in progress               epoch=0 percentage=0 elapsed=1.665s
+INFO [08-26|10:51:47] Generating DAG in progress               epoch=0 percentage=1 elapsed=3.279s
+INFO [08-26|10:51:48] Generating DAG in progress               epoch=0 percentage=2 elapsed=4.834s
 
 ...
 
-INFO [08-21|01:01:00] Generating DAG in progress               epoch=0 percentage=98 elapsed=3m9.335s
-INFO [08-21|01:01:02] Generating DAG in progress               epoch=0 percentage=99 elapsed=3m11.760s
-INFO [08-21|01:01:02] Generated ethash verification cache      epoch=0 elapsed=3m11.763s
+INFO [08-26|10:54:46] Generating DAG in progress               epoch=0 percentage=98 elapsed=3m2.833s
+INFO [08-26|10:54:48] Generating DAG in progress               epoch=0 percentage=99 elapsed=3m4.779s
+INFO [08-26|10:54:48] Generated ethash verification cache      epoch=0 elapsed=3m4.782s
 ```
 
 실행하면 genesis 파일과 실행 옵션으로 지정한 블록 체인의 정보가 표시되며, 블록 체인을 최초로 실행할 때는 `Generating DAG in progress`로 표시되는 것처럼 DAG가 생성된다.
+
+%%%DAG가 무엇인가 추가%%%
 
 `geth`를 실행한 터미널 말고 다른 터미널을 열어서 확인해보면 디렉토리와 파일이 몇 개 더 생긴 것을 확인할 수 있다.
 
@@ -312,12 +327,12 @@ INFO [08-21|01:01:02] Generated ethash verification cache      epoch=0 elapsed=3
 homo.efficio ~/study/ethereum
 🍺  ll private-chain/
 total 0
-drwxr-xr-x  6 1003604  staff  204  8 21 00:57 ./
-drwxr-xr-x  4 1003604  staff  136  8 21 00:40 ../
-drwxr-xr-x  4 1003604  staff  136  8 21 01:07 .ethash/
-drwxr-xr-x  7 1003604  staff  238  8 21 00:57 geth/
-srw-------  1 1003604  staff    0  8 21 00:57 geth.ipc=
-drwx------  4 1003604  staff  136  8 20 23:05 keystore/
+drwxr-xr-x  6 1003604  staff  204  8 26 10:51 ./
+drwxr-xr-x  4 1003604  staff  136  8 26 10:44 ../
+drwxr-xr-x  3 1003604  staff  102  8 26 10:51 .ethash/
+drwxr-xr-x  7 1003604  staff  238  8 26 10:51 geth/
+srw-------  1 1003604  staff    0  8 26 10:51 geth.ipc=
+drwx------  4 1003604  staff  136  8 26 10:42 keystore/
 ```
 
 DAG는 `.ethash` 디렉토리 안에 생성된다.
@@ -326,10 +341,15 @@ DAG는 `.ethash` 디렉토리 안에 생성된다.
 
 ```
 ...
+INFO [08-26|10:54:54] Generating DAG in progress               epoch=1 percentage=0  elapsed=3.236s
+INFO [08-26|10:54:58] Generating DAG in progress               epoch=1 percentage=1  elapsed=6.751s
+INFO [08-26|10:55:01] Generating DAG in progress               epoch=1 percentage=2  elapsed=10.163s
 
-INFO [08-21|01:01:32] Generating DAG in progress               epoch=1 percentage=6  elapsed=26.190s
-INFO [08-21|01:01:35] Successfully sealed new block            number=1 hash=976032…350d9e
-INFO [08-21|01:01:35] 🔨 mined potential block
+...
+
+INFO [08-26|10:56:31] Generating DAG in progress               epoch=1 percentage=25 elapsed=1m40.337s
+INFO [08-26|10:56:32] Successfully sealed new block            number=1 hash=69819c…e79624
+INFO [08-26|10:56:32] 🔨 mined potential block                  number=1 hash=69819c…e79624
 
 ...
 ```
@@ -339,76 +359,163 @@ INFO [08-21|01:01:35] 🔨 mined potential block
 ```
 ...
 
-INFO [08-21|01:07:26] Generating DAG in progress               epoch=1 percentage=98 elapsed=6m20.528s
-INFO [08-21|01:07:30] Generating DAG in progress               epoch=1 percentage=99 elapsed=6m24.023s
-INFO [08-21|01:07:30] Generated ethash verification cache      epoch=1 elapsed=6m24.027s
-INFO [08-21|01:07:38] Successfully sealed new block            number=11 hash=1e06b0…5a67d7
-INFO [08-21|01:07:38] 🔗 block reached canonical chain          number=6  hash=5a445c…15cac2
-INFO [08-21|01:07:38] 🔨 mined potential block                  number=11 hash=1e06b0…5a67d7
-INFO [08-21|01:07:38] Commit new mining work                   number=12 txs=0 uncles=0 elapsed=108.738µs
-INFO [08-21|01:07:52] Successfully sealed new block            number=12 hash=cf444f…54d372
-INFO [08-21|01:07:52] 🔗 block reached canonical chain          number=7  hash=6c8c87…2cc785
-INFO [08-21|01:07:52] 🔨 mined potential block                  number=12 hash=cf444f…54d372
+INFO [08-26|11:01:09] Generating DAG in progress               epoch=1 percentage=98 elapsed=6m18.225s
+INFO [08-26|11:01:13] Generating DAG in progress               epoch=1 percentage=99 elapsed=6m22.063s
+INFO [08-26|11:01:13] Generated ethash verification cache      epoch=1 elapsed=6m22.066s
+INFO [08-26|11:01:29] Successfully sealed new block            number=12 hash=cda6e1…ac5043
+INFO [08-26|11:01:29] 🔗 block reached canonical chain          number=7  hash=8184cc…5041d0
+INFO [08-26|11:01:29] 🔨 mined potential block                  number=12 hash=cda6e1…ac5043
+INFO [08-26|11:01:29] Commit new mining work                   number=13 txs=0 uncles=0 elapsed=110.092µs
+INFO [08-26|11:02:02] Successfully sealed new block            number=13 hash=27c112…ebdaf2
+INFO [08-26|11:02:02] 🔗 block reached canonical chain          number=8  hash=79948e…1eb69d
+INFO [08-26|11:02:02] 🔨 mined potential block                  number=13 hash=27c112…ebdaf2
 
 ...
 ```
 
-블록 체인은 `CTRL+C`로 아래와 같이 실행을 멈출 수 있다. 
+블록 체인 구동을 멈추고 싶으면 언제든지 `CTRL+C`로 멈출 수 있다. 멈추면 아래와 같이 HTTP endpoint, IPC endpoint, Blockchain manager, Ethereum protocol, Transaction pool, Database 등의 서비스가 중지되며 블록 체인 구동이 멈추게 된다.
 
 ```
-INFO [08-21|01:22:20] Commit new mining work                   number=55 txs=0 uncles=0 elapsed=235.586µs
-^CINFO [08-21|01:22:27] Got interrupt, shutting down...
-INFO [08-21|01:22:27] HTTP endpoint closed: http://127.0.0.1:8545
-INFO [08-21|01:22:27] IPC endpoint closed: /Users/1003604/study/ethereum/private-chain/geth.ipc
-INFO [08-21|01:22:27] Blockchain manager stopped
-INFO [08-21|01:22:27] Stopping Ethereum protocol
-INFO [08-21|01:22:27] Ethereum protocol stopped
-INFO [08-21|01:22:27] Transaction pool stopped
-INFO [08-21|01:22:27] Database closed                          database=/Users/1003604/study/ethereum/private-chain/geth/chaindata
+INFO [08-26|11:08:11] Commit new mining work                   number=21 txs=0 uncles=0 elapsed=129.47µs
+^CINFO [08-26|11:09:06] Got interrupt, shutting down...
+INFO [08-26|11:09:06] HTTP endpoint closed: http://127.0.0.1:8545
+INFO [08-26|11:09:06] IPC endpoint closed: /Users/1003604/study/ethereum/private-chain/geth.ipc
+INFO [08-26|11:09:06] Blockchain manager stopped
+INFO [08-26|11:09:06] Stopping Ethereum protocol
+INFO [08-26|11:09:06] Ethereum protocol stopped
+INFO [08-26|11:09:06] Transaction pool stopped
+INFO [08-26|11:09:06] Database closed                          database=/Users/1003604/study/ethereum/private-chain/geth/chaindata
 ```
 
-위 로그를 보면 55번째 블록 생성 중 실행이 멈췄는데, 앞에서 블록 체인을 구동했던 명령을 다시 실행하면 아래와 같이 55번째 블록부터 다시 생성한다.
+블록 체인을 다시 구동하려면 위에서 실행한 명령을 다시 실행하면 된다. 위 로그를 보면 21번째 블록 생성 중 실행이 멈췄는데, 블록 체인을 다시 구동하면 아래와 같이 21번째 블록부터 다시 생성한다.
 
 ```
 homo.efficio ~/study/ethereum
 🍺  geth --datadir private-chain \
-  --ethash.dagdir private-chain/.ethash \
-  --identity "MyEthNode01" \
-  --mine \
-  --minerthreads 4 \
-  --etherbase 9cd6341e4d4de6651b0a498e28a90b1538695a8b \
-  --networkid 23 \
-  --nodiscover \
-  --maxpeers 0 \
-  --rpc \
-  --rpcapi "db,eth,net,web3" \
-  --rpccorsdomain "*"
-INFO [08-21|01:23:22] Starting peer-to-peer node               instance=Geth/MyEthNode01/v1.7.0-unstable-6ca59d98/darwin-amd64/go1.8.3
-INFO [08-21|01:23:22] Allocated cache and file handles         database=/Users/1003604/study/ethereum/private-chain/geth/chaindata cache=128 handles=1024
-INFO [08-21|01:23:22] Initialised chain configuration          config="{ChainID: 23 Homestead: 0 DAO: <nil> DAOSupport: false EIP150: <nil> EIP155: 0 EIP158: 0 Metropolis: <nil> Engine: unknown}"
-INFO [08-21|01:23:22] Disk storage enabled for ethash caches   dir=/Users/1003604/study/ethereum/private-chain/geth/ethash count=3
-INFO [08-21|01:23:22] Disk storage enabled for ethash DAGs     dir=private-chain/.ethash                                   count=2
-INFO [08-21|01:23:22] Initialising Ethereum protocol           versions="[63 62]" network=23
-INFO [08-21|01:23:22] Loaded most recent local header          number=54 hash=898f50…f78592 td=214641335
-INFO [08-21|01:23:22] Loaded most recent local full block      number=54 hash=898f50…f78592 td=214641335
-INFO [08-21|01:23:22] Loaded most recent local fast block      number=54 hash=898f50…f78592 td=214641335
-INFO [08-21|01:23:22] Loaded local transaction journal         transactions=0 dropped=0
-INFO [08-21|01:23:22] Regenerated local transaction journal    transactions=0 accounts=0
-WARN [08-21|01:23:22] Blockchain not empty, fast sync disabled
-INFO [08-21|01:23:22] Starting P2P networking
-INFO [08-21|01:23:22] RLPx listener up                         self="enode://aad004f194f5a9d6fd557969c95c1ab15daeefd8dc53e946db8377eca51277365274c7fdd03cb512261a3ae5ca4617c2c01fd1663f989b55607fc62c836b183c@[::]:30303?discport=0"
-INFO [08-21|01:23:22] IPC endpoint opened: /Users/1003604/study/ethereum/private-chain/geth.ipc
-INFO [08-21|01:23:22] HTTP endpoint opened: http://127.0.0.1:8545
-INFO [08-21|01:23:22] Transaction pool price threshold updated price=18000000000
-INFO [08-21|01:23:22] Starting mining operation
-INFO [08-21|01:23:22] Commit new mining work                   number=55 txs=0 uncles=0 elapsed=396.617µs
-INFO [08-21|01:23:25] Mapped network port                      proto=tcp extport=30303 intport=30303 interface="UPNP IGDv1-IP1"
-INFO [08-21|01:23:55] Successfully sealed new block            number=55 hash=fea353…30e440
-INFO [08-21|01:23:55] 🔨 mined potential block                  number=55 hash=fea353…30e440
-INFO [08-21|01:23:55] Commit new mining work                   number=56 txs=0 uncles=0 elapsed=310.238µs
+>   --ethash.dagdir private-chain/.ethash \
+>   --identity "MyEthNode01" \
+>   --mine \
+>   --minerthreads 4 \
+>   --etherbase 4f27ca4553225cfdddb96fdb89346e7565e61627 \
+>   --networkid 23 \
+>   --nodiscover \
+>   --maxpeers 0 \
+>   --rpc \
+>   --rpcapi "db,eth,net,web3" \
+>   --rpccorsdomain "*"
+INFO [08-26|11:10:16] Starting peer-to-peer node               instance=Geth/MyEthNode01/v1.7.0-unstable-bf1e2631/darwin-amd64/go1.8.3
+INFO [08-26|11:10:16] Allocated cache and file handles         database=/Users/1003604/study/ethereum/private-chain/geth/chaindata cache=128 handles=1024
+INFO [08-26|11:10:16] Initialised chain configuration          config="{ChainID: 23 Homestead: 0 DAO: <nil> DAOSupport: false EIP150: <nil> EIP155: 0 EIP158: 0 Metropolis: <nil> Engine: unknown}"
+INFO [08-26|11:10:16] Disk storage enabled for ethash caches   dir=/Users/1003604/study/ethereum/private-chain/geth/ethash count=3
+INFO [08-26|11:10:16] Disk storage enabled for ethash DAGs     dir=private-chain/.ethash                                   count=2
+INFO [08-26|11:10:16] Initialising Ethereum protocol           versions="[63 62]" network=23
+INFO [08-26|11:10:16] Loaded most recent local header          number=20 hash=85bb5e…38f8a5 td=82517715
+INFO [08-26|11:10:16] Loaded most recent local full block      number=20 hash=85bb5e…38f8a5 td=82517715
+INFO [08-26|11:10:16] Loaded most recent local fast block      number=20 hash=85bb5e…38f8a5 td=82517715
+INFO [08-26|11:10:16] Loaded local transaction journal         transactions=0 dropped=0
+INFO [08-26|11:10:16] Regenerated local transaction journal    transactions=0 accounts=0
+WARN [08-26|11:10:16] Blockchain not empty, fast sync disabled
+INFO [08-26|11:10:16] Starting P2P networking
+INFO [08-26|11:10:16] RLPx listener up                         self="enode://c447ea2f047334fb18559c252976a484ba4935a692996733a5731b3d6982bbdf494e4b1f0a995a53cefa4124523476e5b36de397d8e15cfb694c556efd73c80b@[::]:30303?discport=0"
+INFO [08-26|11:10:16] IPC endpoint opened: /Users/1003604/study/ethereum/private-chain/geth.ipc
+INFO [08-26|11:10:16] HTTP endpoint opened: http://127.0.0.1:8545
+INFO [08-26|11:10:16] Transaction pool price threshold updated price=18000000000
+INFO [08-26|11:10:16] Starting mining operation
+INFO [08-26|11:10:16] Commit new mining work                   number=21 txs=0 uncles=0 elapsed=189.174µs
+INFO [08-26|11:10:18] Mapped network port                      proto=tcp extport=30303 intport=30303 interface="UPNP IGDv1-IP1"
+INFO [08-26|11:10:30] Successfully sealed new block            number=21 hash=12aa85…7655a3
+INFO [08-26|11:10:30] 🔨 mined potential block                  number=21 hash=12aa85…7655a3
+INFO [08-26|11:10:30] Commit new mining work                   number=22 txs=0 uncles=0 elapsed=117.364µs
+INFO [08-26|11:10:35] Successfully sealed new block            number=22 hash=40fd31…b1bb11
+INFO [08-26|11:10:35] 🔨 mined potential block                  number=22 hash=40fd31…b1bb11
 ```
 
 참고로 현재 운영 중인 이더리움의 블록 체인 정보는 https://ethstats.net/ 에서 확인할 수 있다.
 
 # JSON RPC 를 이용한 송금 및 확인
+
+블록 체인이 성공적으로 구동되고 있으므로 이제 드디어 이더를 실제로 주고 받을 수 있다. 여러가지 방법으로 이더를 주고 받을 수 있으나, 여기에서는 별다른 설정 없이 가장 간편하게 사용할 수 있는 JSON RPC로 송금을 해본다.
+
+geth로 블록 체인을 구동할 때 `  --rpc --rpcapi "db,eth,net,web3" --rpccorsdomain "*"` 옵션을 추가했기 떄문에 RPC 서버가 기본값으로 8545포트에서 구동된다. 그리고 `curl`로 RPC 서버에 JSON 데이터를 전달해서 송금을 할 수 있다.
+
+JSON RPC에서 사용 가능한 명령은 [Ethereum Wiki의 JSON RPC](https://github.com/ethereum/wiki/wiki/JSON-RPC)에 나와 있다.
+
+## JSON RPC 몸풀기
+
+먼저 몇 가지 조회 메서드로 몸을 풀어보면서 JSON RPC로 이더리움 블록 체인과 이야기를 나누는 방법을 알아보자.
+
+### eth_getClientVersion
+
+클라이언트의 버전과 정보를 확인할 수 있다.
+
+```
+homo.efficio ~/study/ethereum
+🍺  curl -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":67}' http://localhost:8545
+```
+`curl`의 `--data` 옵션으로 JSON 데이터를 서버에 보내면 응답을 받을 수 있다. JSON 데이터의 형식과 설명은 다음과 같다.
+
+```json
+{
+  "jsonrpc": "2.0",  // JSON-RPC의 버전
+  "method": "web3_clientVersion",  // 호출할 JSON RPC 메서드 이름 
+  "params": [],  // JSON RPC 메서드에 넘겨줄 파라미터
+  "id": 67  // JSON RPC 호출 식별자
+}
+```
+위와 같이 `curl`을 실행해서 요청을 보내면 아래와 같은 응답을 받을 수 있다.
+
+```json
+{
+  "jsonrpc": "2.0",  // JSON-RPC의 버전
+  "id": 67,  // 요청 시에 전달받았던 JSON RPC 식별자
+  "result": "Geth/MyEthNode01/v1.7.0-unstable-bf1e2631/darwin-amd64/go1.8.3"  // JSON-RPC의 메서드가 반환하는 값
+}
+```
+
+이번에는 파라미터가 있는 메서드를 호출해보자.
+
+### eth_getBalance
+
+특정 계정의 이더 잔액을 확인할 수 있다.
+
+```
+homo.efficio ~/study/ethereum
+🍺  curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0x4f27ca4553225cfdddb96fdb89346e7565e61627", "latest"],"id":1}' http://localhost:8545
+```
+
+`params` 항목은 잔액을 확인할 계정 공개 주소와 `"latest"`라는 문자열로 구성되는 배열이다. 이 `"latest"`는 default block parameter라고 하며, 정보 조회 시 기준이 되는 불록을 지정하는 역할을 담당한다. default block parameter는 블록 번호 또는 다음 값 중의 하나를 선택할 수 있다.
+
+- `"earlist"`: 원조 genesis 블록
+- `"latest"`: 가장 최근에 생성된 블록, 대부분의 경우 `"latest"`를 사용
+- `"pending"`: 보류 상태의 블록 또는 트랜젹션
+
+응답은 다음과 같다.
+
+```json
+{
+  "jsonrpc":"2.0",
+  "id":1,
+  "result":"0x8f1d5c1cae969e100"  // 잔액
+}
+```
+
+## 송금
+
+`4f27ca4553225cfdddb96fdb89346e7565e61627` 주소에서 `8128ff5a55370dc9555e5c18b716050bdf2c8440` 주소로 30000 이더를 보내보자.
+
+먼저 받는 쪽의 잔액도 미리 확인해두자.
+
+```
+homo.efficio ~/study/ethereum
+🍺  curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0x8128ff5a55370dc9555e5c18b716050bdf2c8440", "latest"],"id":1}' http://localhost:8545
+{"jsonrpc":"2.0","id":1,"result":"0x11e1a300"}
+```
+
+금액이 16진수로 표시되는데 http://www.binaryhexconverter.com/hex-to-decimal-converter 같은 온라인 계산기로 10진수로 변환할 수 있다. 변환해보면 값은 `300000000`이며 genesis 파일에 설정한 금액과 같다.
+
+### eth_sendTransaction
+
+
+
+
 
