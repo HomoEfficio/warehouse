@@ -1,0 +1,22 @@
+# IOTA 사용 및 운영
+
+## 지갑
+
+- https://iotasupport.com/gui-newseed.shtml
+
+- https://forum.helloiota.com/436/RE-How-to-generate-a-secure-seed
+
+## 풀노드 운영
+
+- https://iotasupport.com/gettingstarted.shtml
+
+- https://iotasupport.com/staticip.shtml
+
+# IOTA 개요
+
+- https://hackernoon.com/what-is-iota-5da4446602a
+
+## Tangle
+
+- https://github.com/HomoEfficio/iota-consensus-powerpoint/blob/master/iota_consensus_v1.0_korean.md
+
