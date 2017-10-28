@@ -14,9 +14,15 @@
 
 # IOTA 개요
 
+- https://www.youtube.com/watch?v=I_jNH9BlEEo
+
 - https://hackernoon.com/what-is-iota-5da4446602a
+
+- https://www.youtube.com/watch?v=LyC04NrJ3yA
 
 ## Tangle
 
 - https://github.com/HomoEfficio/iota-consensus-powerpoint/blob/master/iota_consensus_v1.0_korean.md
+
+- https://www.youtube.com/watch?v=tYbRyVrrUDY
 
