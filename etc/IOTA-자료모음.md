@@ -26,3 +26,5 @@
 
 - https://www.youtube.com/watch?v=tYbRyVrrUDY
 
+- https://www.gitbook.com/book/domschiener/iota-guide/details
+
