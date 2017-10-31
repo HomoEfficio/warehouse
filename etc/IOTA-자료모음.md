@@ -28,3 +28,7 @@
 
 - https://www.gitbook.com/book/domschiener/iota-guide/details
 
+## IOTA 사용처
+
+- https://steemit.com/iota/@nateq/every-partner-and-affiliation-that-iota-has-the-tangle
+
