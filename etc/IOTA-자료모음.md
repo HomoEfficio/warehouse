@@ -32,3 +32,5 @@
 
 - https://steemit.com/iota/@nateq/every-partner-and-affiliation-that-iota-has-the-tangle
 
+- https://www.reddit.com/r/Iota/comments/5l5g88/current_revealed_foundation_members/
+
