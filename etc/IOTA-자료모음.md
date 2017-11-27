@@ -12,6 +12,8 @@
 
 - https://iotasupport.com/staticip.shtml
 
+- https://forum.helloiota.com/1191/Setting-Up-a-Full-Node-A-Comprehensive-Guide
+
 # IOTA 개요
 
 - https://www.youtube.com/watch?v=I_jNH9BlEEo
