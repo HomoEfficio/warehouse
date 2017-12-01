@@ -36,3 +36,9 @@
 
 - https://www.reddit.com/r/Iota/comments/5l5g88/current_revealed_foundation_members/
 
+## 개발자허브 등
+
+- https://iota.readme.io/
+
+- http://www.iotasupport.com/
+
