@@ -14,6 +14,8 @@
 
 - https://forum.helloiota.com/1191/Setting-Up-a-Full-Node-A-Comprehensive-Guide
 
+- http://www.iotasupport.com/walletknowledgebase.shtml
+
 # IOTA 개요
 
 - https://www.youtube.com/watch?v=I_jNH9BlEEo
