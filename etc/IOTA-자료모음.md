@@ -16,6 +16,9 @@
 
 - http://www.iotasupport.com/walletknowledgebase.shtml
 
+- https://x-vps.com/blog/?p=111
+
+
 # IOTA 개요
 
 - https://www.youtube.com/watch?v=I_jNH9BlEEo
