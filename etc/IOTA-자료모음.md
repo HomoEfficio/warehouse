@@ -18,6 +18,7 @@
 
 - https://x-vps.com/blog/?p=111
 
+- http://iota.partners/
 
 # IOTA 개요
 
