@@ -48,3 +48,7 @@
 
 - http://www.iotasupport.com/
 
+## 관련 기사
+
+- 지멘스차량 전봇대 충전 possibly - https://twitter.com/Siemens_Energy/status/938181340649926657
+
