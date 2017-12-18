@@ -22,6 +22,15 @@
 
 - https://www.reddit.com/r/Iota/comments/7idpx8/easy_how_to_setup_a_full_node/?st=jb7xexsg&sh=727aa34a
 
+## explorer
+
+- https://thetangle.org
+
+## reattacher
+
+- https://reattach.iotalpha.io/
+
+
 # IOTA 개요
 
 - https://www.youtube.com/watch?v=I_jNH9BlEEo
@@ -29,6 +38,8 @@
 - https://hackernoon.com/what-is-iota-5da4446602a
 
 - https://www.youtube.com/watch?v=LyC04NrJ3yA
+
+- https://bitcointalk.org/index.php?topic=1216479.0
 
 ## Tangle
 
@@ -53,4 +64,7 @@
 ## 관련 기사
 
 - 지멘스차량 전봇대 충전 possibly - https://twitter.com/Siemens_Energy/status/938181340649926657
+
+- 아마존 iot 설계자 트윗: https://twitter.com/jojobickley/status/941735996483297280
+
 
