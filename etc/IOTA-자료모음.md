@@ -67,4 +67,4 @@
 
 - 아마존 iot 설계자 트윗: https://twitter.com/jojobickley/status/941735996483297280
 
-
+- 캐나다 스마트 빌딩: https://twitter.com/green_protocol/status/940437300743303168
