@@ -24,6 +24,8 @@
 
 - https://www.reddit.com/r/Iota/comments/7idpx8/easy_how_to_setup_a_full_node/?st=jb7xexsg&sh=727aa34a
 
+- http://iota.partners/
+
 ## explorer
 
 - https://thetangle.org
