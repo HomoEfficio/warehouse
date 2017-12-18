@@ -6,6 +6,8 @@
 
 - https://forum.helloiota.com/436/RE-How-to-generate-a-secure-seed
 
+- https://medium.com/iota-ucl
+
 ## 풀노드 운영
 
 - https://iotasupport.com/gettingstarted.shtml
