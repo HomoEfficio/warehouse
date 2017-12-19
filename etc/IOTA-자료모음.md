@@ -26,13 +26,33 @@
 
 - http://iota.partners/
 
-## explorer
+## 도구
+
+### Explorer
 
 - https://thetangle.org
 
-## reattacher
+- https://iotasear.ch
+
+### Reattacher
 
 - https://reattach.iotalpha.io/
+
+### Graph
+
+- http://tangle.glumb.de
+
+### 기타
+
+- iota mining with monero? https://mineiota.com/ https://github.com/janfiedler/mineiota/ 
+
+
+# IOTA 활용 오픈소스 프로젝트
+
+- https://github.com/pRizz/iota-transaction-spammer-webapp
+
+- https://learn.iota.org/tutorial/payments-and-messaging-leaderboard
+
 
 
 # IOTA 개요
