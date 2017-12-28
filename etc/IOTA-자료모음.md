@@ -28,6 +28,10 @@
 
 - https://hub.docker.com/r/bluedigits/iota-node/
 
+- 아수스 팅커 보드에 풀노드 돌리기: https://medium.com/biilabs/deploy-iota-fullnode-on-asus-tinker-board-fcd2cff8331f
+
+
+
 ## 도구
 
 ### Explorer
@@ -94,3 +98,7 @@
 - 아마존 iot 설계자 트윗: https://twitter.com/jojobickley/status/941735996483297280
 
 - 캐나다 스마트 빌딩: https://twitter.com/green_protocol/status/940437300743303168
+
+- 오해받는 아이오타: https://medium.com/@norbert.gehrke/iota-the-misunderstood-coin-c6c94678ec99
+
+
