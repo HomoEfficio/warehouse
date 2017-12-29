@@ -71,6 +71,10 @@
 
 - https://bitcointalk.org/index.php?topic=1216479.0
 
+## IOTA 개발
+
+- IOTA 자료 구조: https://iota.stackexchange.com/questions/100/what-is-the-iota-transaction-data-structure
+
 ## Tangle
 
 - https://github.com/HomoEfficio/iota-consensus-powerpoint/blob/master/iota_consensus_v1.0_korean.md
