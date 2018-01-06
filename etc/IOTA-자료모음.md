@@ -105,4 +105,7 @@
 
 - 오해받는 아이오타: https://medium.com/@norbert.gehrke/iota-the-misunderstood-coin-c6c94678ec99
 
+- ★★★아이오타 하드웨어 파트: https://medium.com/@iotasuppoter/iota-the-hardware-part-a6100b5bb4d5
+
+
 
