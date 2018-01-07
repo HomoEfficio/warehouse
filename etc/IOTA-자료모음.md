@@ -30,6 +30,8 @@
 
 - 아수스 팅커 보드에 풀노드 돌리기: https://medium.com/biilabs/deploy-iota-fullnode-on-asus-tinker-board-fcd2cff8331f
 
+- With Ansible: https://github.com/nuriel77/iri-playbook/blob/master/README.md
+
 
 
 ## 도구
