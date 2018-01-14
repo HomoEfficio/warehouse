@@ -77,6 +77,8 @@
 
 - IOTA 자료 구조: https://iota.stackexchange.com/questions/100/what-is-the-iota-transaction-data-structure
 
+- IOTA Transaction: https://medium.com/@louielu/in-depth-explanation-of-how-iota-making-a-transaction-with-picture-8a638805f905
+
 ## Tangle
 
 - https://github.com/HomoEfficio/iota-consensus-powerpoint/blob/master/iota_consensus_v1.0_korean.md
