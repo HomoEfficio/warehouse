@@ -73,6 +73,8 @@
 
 - https://bitcointalk.org/index.php?topic=1216479.0
 
+- https://www.reddit.com/r/Iota/comments/7e0noj/beginners_introduction_to_iota/
+
 ## IOTA 개발
 
 - IOTA 자료 구조: https://iota.stackexchange.com/questions/100/what-is-the-iota-transaction-data-structure
