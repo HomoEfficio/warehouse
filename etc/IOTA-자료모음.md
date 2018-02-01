@@ -81,6 +81,8 @@
 
 - IOTA Transaction: https://medium.com/@louielu/in-depth-explanation-of-how-iota-making-a-transaction-with-picture-8a638805f905
 
+- IOTA Hash Algorithms: https://github.com/iotaledger/kerl, https://iota.stackexchange.com/questions/208/what-are-the-expected-advantages-of-curl-p-over-kerl-algorithm
+
 ## Tangle
 
 - https://github.com/HomoEfficio/iota-consensus-powerpoint/blob/master/iota_consensus_v1.0_korean.md
