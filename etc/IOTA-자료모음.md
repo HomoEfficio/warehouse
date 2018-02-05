@@ -32,6 +32,8 @@
 
 - With Ansible: https://github.com/nuriel77/iri-playbook/blob/master/README.md
 
+- HTTPS: https://medium.com/@jort.debokx/how-to-setup-https-for-your-iota-full-node-106f829ba2f1
+
 
 
 ## 도구
