@@ -5,6 +5,7 @@ https://bitcoin.org/en/developer-guide 와 https://bitcoin.org/en/developer-refe
 - 비트코인은 
 
   >누군가의 지갑 주소에 담겨있는 것이 아니라,
+  
   >누군가의 지갑 주소로 잠겨있다.
 
 - 비트코인 트랜잭션(거래) 또는 비트코인 지불은 송금자가 송금자의 서명으로 코인의 잠금을 해제하고, 수금자의 정보로 코인을 잠그는 것이다.
