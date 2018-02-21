@@ -28,7 +28,11 @@
 
 - 여기까지 내용은 https://steemit.com/eos/@dev1by0/eos-io-eos-ico 에 잘 나와 있다.
 
+## 현실적으로는 어떻게 전개될까?
+
+- https://steemit.com/coinkorea/@indend007/sayin-insane-eos-multiverse 를 참고한다.
+
 ## 블락원은 왜 스스로 메인넷을 론칭하지 않을까?
 
-- EOS 토큰이 Securities로 취급되지 않게 하려는 법적 이슈 때문인 걸로 추정되며, https://steemit.com/eos/@dev1by0/eos-io-eos-ico#@clayop/re-dev1by0-eos-io-eos-ico-20170831t205439323z 를 참고 한다.
+- EOS 토큰이 Securities로 취급되지 않게 하려는 법적 이슈 때문인 걸로 추정되며, https://steemit.com/eos/@dev1by0/eos-io-eos-ico#@clayop/re-dev1by0-eos-io-eos-ico-20170831t205439323z 를 참고한다.
 
