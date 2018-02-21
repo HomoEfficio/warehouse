@@ -117,5 +117,5 @@
 
 - ★★★아이오타 하드웨어 파트: https://medium.com/@iotasuppoter/iota-the-hardware-part-a6100b5bb4d5
 
-
+- Ternary: https://mobile.twitter.com/sgrasmann/status/966339165599227904
 
