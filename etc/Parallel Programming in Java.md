@@ -73,7 +73,7 @@ parallel speedup <= Work / Span
 
 ## Parallel Loop
 
-n*n 매트릭스 곱 연산의 예
+`n*n` 매트릭스 곱 연산의 예
 
 ### Sequential
 
