@@ -147,3 +147,44 @@ Bye 2
 Bye 1
 Bye 0
 ```
+
+### Stencil Computation
+
+Xi = Avg(Xi-1, Xi+1) with X0 = 0 and X1 = 1
+
+
+### Java Phaser
+
+Barrier는 자바에서는 `java.util.concurrent.Phaser`로 구현되어 있다.
+
+```
+Phaser ph = new Phaser(n);
+
+forall (i : [0:n-1]) {
+  print HELLO, i;
+
+  int phase = ph.arrive();  // arrive가 뭘까?
+
+  myId = lookup(i);
+
+  ph.awaitAdvance(phase);  // awaitAdvance가 뭘까?
+  
+  print BYE, myId;
+}
+
+```
+
+### Point-to-Point Sync
+
+![Imgur](https://i.imgur.com/WqEArYb.png)
+
+- Critical Path Length(Span)는 6이지만, 실제 의존 관계를 살펴보면 3이 소요되는 Task2와 3이 소요되는 D(X, Y)에는 의존 관계가 없다.
+- 따라서 Phaser를 적절히 사용하면 실질적인 CPL은 6이 아니라 Task1-D 또는 Task2-E로 이어지는 5가 된다.
+
+Task 0 | Task 1 | Task 2
+----|----|----
+1a: X = A(); //cost = 1 | 1b: Y = B(); //cost = 2 | 1c: Z = C(); //cost = 3
+2a: ph0.arrive(); | 2b: ph1.arrive(); | 2c: ph2.arrive();
+3a: ph1.awaitAdvance(0); | 3b: ph0.awaitAdvance(0); | 3c: ph1.awaitAdvance(0);
+4a: D(X, Y); //cost = 3 | 4b: ph2.awaitAdvance(0); | 4c: F(Y, Z); //cost = 1
+done | 5b: E(X, Y, Z); //cost = 2 | done
