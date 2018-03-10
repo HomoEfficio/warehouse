@@ -73,7 +73,7 @@ parallel speedup <= Work / Span
 
 ## Parallel Loop
 
-`n*n` 매트릭스 곱 연산의 예
+n*n 매트릭스 곱 연산의 예
 
 ### Sequential
 
@@ -152,29 +152,38 @@ Bye 0
 
 Xi = Avg(Xi-1, Xi+1) with X0 = 0 and X1 = 1
 
+## Phaser
 
-### Java Phaser
+### Split-phase Barrier
 
-Barrier는 자바에서는 `java.util.concurrent.Phaser`로 구현되어 있다.
+
+```
+forall (i: [1:n-1]) {
+  print "Hello " + i
+  myId = lookup(i)  // 100 소요
+  barrierNext // 100 소요 - 이 barrier는 myId 보다 위에 둘 수도 있음
+  print "Bye " + myId
+}
+```
+
+위 코드의 Critical Path는 200 이다. barrierNext를 `myId = lookup(i)` 앞에 둘 수도 있지만 CP가 200 인 건 마찬가지다.
+
+하지만 아래와 같이 Barrier 대신 Phaser를 쓰면 CP를 100으로 줄일 수 있다.
 
 ```
 Phaser ph = new Phaser(n);
-
-forall (i : [0:n-1]) {
-  print HELLO, i;
-
-  int phase = ph.arrive();  // arrive가 뭘까?
-
-  myId = lookup(i);
-
-  ph.awaitAdvance(phase);  // awaitAdvance가 뭘까?
+forall (i: [1:n-1]) {
+  print "Hello " + i
+  int phase = phase.arrive();  // 이 지점에 도달했음을 알림
+  myId = lookup(i)  // 100 소요
   
-  print BYE, myId;
+  ph.awaitAdvance(phase)  // waiting하지 않고 arrive의 갯수만 체크해서 모두 도달했으면 통과
+  print "Bye " + myId  
 }
-
 ```
 
-### Point-to-Point Sync
+
+### Point-to-Point Synchronization
 
 ![Imgur](https://i.imgur.com/WqEArYb.png)
 
@@ -188,3 +197,73 @@ Task 0 | Task 1 | Task 2
 3a: ph1.awaitAdvance(0); | 3b: ph0.awaitAdvance(0); | 3c: ph1.awaitAdvance(0);
 4a: D(X, Y); //cost = 3 | 4b: ph2.awaitAdvance(0); | 4c: F(Y, Z); //cost = 1
 done | 5b: E(X, Y, Z); //cost = 2 | done
+
+
+### 1차원 반복 평균 Synchronization
+
+![Imgur](https://i.imgur.com/9JBEtcn.png)
+
+기다려야 하는 곳에서만 기다리는 방식으로 최적화하는 기법은 sparse matrix 계산에도 적용될 수 있다.
+
+```java
+// Allocate array of Phasers
+Phaser[] ph = new Phaser[n + 2];
+for (int i = 0, len = ph.length; i < len; i++) {
+  phaser[i] = new Phaser(1);
+}
+
+// Main Computation
+forall (i: [1:n - 1]) {
+  for (iter: [o:nsteps -1] {
+    newX[i] = (oldX[i - 1] + oldX[i + 1]) / 2;
+    
+    ph[i].arrive();
+    
+    // 의존 관계가 있는 것에 대해서만 wait 해서 최적화
+    if (index > 1) ph[i - 1].awaitAdvance(iter);
+    if (index < n - 1) ph[i + 1].awaitAdvance(iter);
+    
+    swap pointers newX and oldX;
+  }
+}
+```
+여기에 grouping/chunking 병렬 프로그래밍을 적용하면 다음과 같이 된다.
+
+```java
+// Allocate array of Phasers
+Phaser[] ph = new Phaser[n + 2];
+for (int i = 0, len = ph.length; i < len; i++) {
+  phaser[i] = new Phaser(1);
+}
+
+// Main Computation
+forall (i: [0:tasks - 1]) {
+  for (iter: [o:nsteps -1] {
+    // Compute leftmost boundary element for group
+    int left = 1 * (n / tasks) + 1;
+    myNew[left] = (myVal[left - 1] + myVal[left + 1]) / 2.0;
+
+    // Compute rightmost boundary element for group
+    int right = (i + 1) * (n / tasks);
+    myNew[right] = (myVal[right - 1] + myVal[right + 1]) / 2.0;
+    
+    // Signal arrival on phaser ph AND LEFT AND RIGHT ELEMENTS ARRIVED
+    int index = i + 1;
+    ph[index].arrive();
+
+    // Compute interior elements in parallel with barrier
+    for (int j = left + 1; j < right; j++)
+      myNew[j] = (myVal[j - 1] + myVal[j + 1]) / 2.0; 
+    
+    // 의존 관계가 있는 것에 대해서만 wait 해서 최적화
+    if (index > 1) ph[index - 1].awaitAdvance(iter);
+    if (index < tasks) ph[index + 1].awaitAdvance(iter);
+    
+    swap pointers newX and oldX;
+  }
+}
+```
+
+### Pipelining
+
+
