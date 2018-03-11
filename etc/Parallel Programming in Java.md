@@ -188,7 +188,8 @@ forall (i: [1:n-1]) {
 ![Imgur](https://i.imgur.com/WqEArYb.png)
 
 - Critical Path Length(Span)는 6이지만, 실제 의존 관계를 살펴보면 3이 소요되는 Task2와 3이 소요되는 D(X, Y)에는 의존 관계가 없다.
-- 따라서 Phaser를 적절히 사용하면 실질적인 CPL은 6이 아니라 Task1-D 또는 Task2-E로 이어지는 5가 된다.
+- Barrier를 쓰면 이런 의존 관계와 상관 없이 항상 단계별로 가장 오래 걸리는 태스크가 끝날 때까지 기다려야 한다.
+- Phaser를 적절히 사용하면 선별적으로 waiting 할 수 있으며, 따라서 실질적인 CPL은 6이 아니라 Task1-D 또는 Task2-E로 이어지는 5가 된다.
 
 Task 0 | Task 1 | Task 2
 ----|----|----
@@ -265,5 +266,54 @@ forall (i: [0:tasks - 1]) {
 ```
 
 ### Pipelining
+
+![Imgur](https://i.imgur.com/n3Rmm8F.png)
+
+n: 아이템의 수
+p: 파이프라인의 단계 수
+work: n * p
+cpl: n * p - 1
+parrel: work/cpl = (n * p) / (n * p - 1) => n이 충분히 크면 1로 수렴
+
+```java
+while (inputExists) {
+  // wait for previous stage, if any
+  if (i > 0) ph[i - 1].awaitAdvance();
+
+  process input
+
+  // signal next stage
+  ph[i].arrive();
+}
+
+```
+
+### Data Flow
+
+![Imgur](https://i.imgur.com/PKOXu5I.png)
+
+의존 관계가 있는 것에만 선별적으로 wait 적용하는 것은 언제나 같다.
+
+Async와 AsyncWait의 순서를 바꿔도 동작한다?
+
+```java
+async( () -> {/* Task A */; A.put(); } ); // Complete task and trigger event A
+async( () -> {/* Task B */; B.put(); } ); // Complete task and trigger event B
+
+asyncAwait(A, () -> {/* Task C */} );     // Only execute task after event A is triggered 
+asyncAwait(A, B () -> {/* Task D */} );   // Only execute task after events A, B are triggered 
+asyncAwait(B, () -> {/* Task E */} );     // Only execute task after event B is triggered
+
+// async와 asyncWait의 순서를 바꿔도 동작한다
+asyncAwait(A, () -> {/* Task C */} );     // Only execute task after event A is triggered 
+asyncAwait(A, B () -> {/* Task D */} );   // Only execute task after events A, B are triggered 
+asyncAwait(B, () -> {/* Task E */} );     // Only execute task after event B is triggered
+
+async( () -> {/* Task A */; A.put(); } ); // Complete task and trigger event A
+async( () -> {/* Task B */; B.put(); } ); // Complete task and trigger event B
+```
+
+put()을 누락하면 deadlock 비슷한 효과 발생, 따라서 실수로 put()을 누락하면 잘못된 결과가 나올때까지 마치 정상인양 프로그램이 돌지 않아서 좋다.
+
 
 
