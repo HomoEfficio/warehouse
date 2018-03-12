@@ -1,5 +1,7 @@
 # Distributed Programming in Java
 
+# Week 1
+
 ## Intro to Map-Reduce
 
 ![Imgur](https://i.imgur.com/imkZiBC.png)
@@ -84,6 +86,66 @@ MR | Transforms(Intermediary - map, filter, join, ...), Actions(Terminal - reduc
 - 슈도 코드로 작성한 후
 - Spark 문장으로 자연스럽게 작성할 수 있다.
   - flatMapToPair(), reduceByKey(), mapValue()
+
+
+# Week 2
+
+## Intro to Sockets
+
+![Imgur](https://i.imgur.com/37mX2uy.png)
+
+- 포트에 바인딩해서 먼저 기다리는 것만 다를 뿐 서버 소켓이나 클라이언트 소켓이나 InputStream, OutputStream를 추출해서 R/W를 모두 할 수 있으므로 서버 소켓, 클라이언트 소켓은 연결이 맺어진 후 통신 과정에서는 사실상 기능상의 차이가 없다.
+
+- 서버 쪽: Socket serverSocket = new ServerSocket(3000).accept(), serverSocket.getInputStream(), serverSocket.getOutputStream()
+- 클라이언트 쪽: Socket clientSocket = new Socket(serverHost, serverPort), clientSocket.getInputStream(), clientSocket.getOutputStream()
+
+- C/S는 적은 수의 프로세스들 사이에 분산 애플리케이션을 만드는데 주로 사용
+
+## Serialization/Deserialization
+
+![Imgur](https://i.imgur.com/pwft0ee.png)
+
+- IntputStream, OutputStream은 기본적으로 바이트 시퀀스로 통신
+- 객체를 바이트 시퀀스로 만들기 위해
+  - CUSTOM Ser/De 를 작성
+  - XML(metadata overhead가 너무 크다)
+  - Java Ser/De
+    - implements Serializable
+    - transient
+  - Interface Definition Language(Protocol Buffer, 다른 언어 플랫폼과 통신 가능, .proto 파일 작성 및 기타 개발 오버헤드)
+
+## Remote Method Invocation(RMI)
+
+![Imgur](https://i.imgur.com/583r6DZ.png)
+
+- Socket과 Ser/De를 바탕으로 나온 고수준 통신 방식
+- remote로 호출되거나 반환되는 객체 모두 Serializable 구현 필요
+- RMI registry에 등록 필요
+- RMI는 초기 셋업이 필요하지만 일단 초기 셋업이 완료되면 실제로는 remote 호출이지만 코드 상에서는 local 호출 하듯이 사용할 수 있음
+
+## Multicast Sockets
+
+![Imgur](https://i.imgur.com/g1niwO0.png)
+
+- Unicast: 1:1
+- Broadcast: 1: all in n/w, local network에서만 사용
+- Multicast: 1:N, N이 포함된 그룹 선택 가능. 인터넷에서 사용 가능. News feed, Video Conference, Multi-player games
+  - DatagramPacket, 64kb
+  - 여러개의 Unicast 보다 하나의 Multicast가 효율적
+
+## Pub/Sub Pattern
+
+![Imgur](https://i.imgur.com/DPFNfIj.png)
+
+- Socket 보다 고수준의 통신 패턴
+- Publisher, Topic/Message, Consumer
+- Multicast와 다르게 Publisher는 Subscriber가 누군지 직접 신경 쓸 필요 없고, Subscriber도 Publisher를 알 필요 없다.
+- Publishser와 Subscriber는 토픽만 알면 된다.
+- batch 처리, broker 노드를 통해 topic partitioning 가능
+- broker 노드는 topic partition을 여러 노드에 복제할 수 있으므로 가용성 증가
+- Kafka는 하듭이나 Spark 같은 데이터 분석의 입력 데이터 조달처로 사용되거나, 출력 채널로 자주 사용된다.
+  - 따라서 Topic에 들어가는 메시지가 Key/Value 이면 데이터 분석에 유리하다.
+  - Key/Value 메시지에는 topic에서 해당 메시지의 위치를 나타내는 인덱스가 포함되기도 한다.
 
 
 
