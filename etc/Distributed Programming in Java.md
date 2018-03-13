@@ -147,6 +147,42 @@ MR | Transforms(Intermediary - map, filter, join, ...), Actions(Terminal - reduc
   - 따라서 Topic에 들어가는 메시지가 Key/Value 이면 데이터 분석에 유리하다.
   - Key/Value 메시지에는 topic에서 해당 메시지의 위치를 나타내는 인덱스가 포함되기도 한다.
 
+# Week 3
+
+## Single Program Multiple Data(SPMD) Model
+
+![Imgur](https://i.imgur.com/qGE7sOi.png)
+
+- SPMD 추상화
+  - 클러스터에 분산되어 있는 노드를 하나의 병렬 컴퓨터처럼 사용할 수 있게 해줌
+  - 각 노드는 멀티코어 CPU, 메모리, NIC로 구성되고 클러스터 내 다른 노드와 통신
+  - 분산 컴퓨팅에서 가장 어려운 부분은 데이터의 분산
+  - 물리적으로는 여러 노드의 개별 메모리에 분산되어 있지만 논리적으로는 하나의 메모리인 것처럼 볼 수 있는 글로벌 뷰 필요
+  - 각 노드는 로컬 메모리에 대한 로컬 뷰 보유
+  - 프로그래머가 로컬 뷰 <-> 글로벌 뷰 전환 처리를 해야함
+  - 각 노드에서 실행되는 프로그램 자체는 동일하지만 데이터는 여러 노드에 분산되어 있는 데이터를 사용하므로 SPMD 모델이라고 부른다.
+
+- MPI(Message Passing Interface)
+  - 각 노드에서 하나의 MPI 프로세스를 실행하는 것이 보통이지만 코어 별로 한 개씩의 프로세스 실행도 가능
+  - mpi.MPI_Init() 메서드로 프로세스 시작
+  - mpi.MPI_Comm_size(mpi.MPI_COMM_WORLD) 메서드로 MPI 애플리케이션에 참여한 프로세스 수 계산
+  - MPI_Comm_rank(mpi.MPI_COMM_WORLD) 메서드로 각 프로세스의 rank(0 ~ N-1) 계산  
+  - 배열 XG = [0, 1, 2, 3]을 분산 컴퓨터의 메모리에 적재하고 읽는 사례
+  - XL.length = XG.length / N
+  - XL[i] = XL.length * R + i, R은 해당 프로세스의 순위
+
+- SPMD는 각 프로세스가 서로 다른 프로그램을 실행하는 Client/Server와는 많이 다름
+
+## Point-to-Point Communication(send/recv)
+
+![Imgur](https://i.imgur.com/hJTGToC.png)
+
+- 여러 노드에서 동일 프로그램을 실행한다는 것을 명심
+- Rank로 node를 구분
+- 보내는 쪽의 메모리 상태와 받는 쪽의 메모리 상태가 다름
+- C로 된 MPI 코드: https://en.wikipedia.org/wiki/Message_Passing_Interface#Example_program
+
+
 
 
 
