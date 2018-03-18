@@ -182,8 +182,38 @@ MR | Transforms(Intermediary - map, filter, join, ...), Actions(Terminal - reduc
 - 보내는 쪽의 메모리 상태와 받는 쪽의 메모리 상태가 다름
 - C로 된 MPI 코드: https://en.wikipedia.org/wiki/Message_Passing_Interface#Example_program
 
+## Message Ordering and Deadlock
 
+![Imgur](https://i.imgur.com/JQ0AY0g.png)
 
+### 메시지 순서
+
+- 여러 MPI 프로세스가 각자 보내는 메시지의 순서를 결정할 수 있나?
+  - 분산 환경에서는 먼저 보낸 메시지가 먼저 도착한다는 보장이 없다.
+  - R0 프로세스에서 R1으로 먼저 보낸 메시지 A가 R2 프로세스가 R3로 늦게 보낸 메시지 B보다 더 늦게 도착한다면, A와 B 중 어느게 더 먼저인가?
+- 결정할 기준과 도달 순서가 명확하지 않으므로 메시지 순서는 아래의 값이 같은 메시지 끼리만 전송 시점을 기준으로 순서를 결정할 수 있다.
+  - 전송자, 수신자, 데이터 타입, 태그
+
+### 데드락
+
+- 회피 방법
+  - 교착 상태를 유발한 프로세스의 한 쪽의 전송/수신 문 순서를 바꾼다.
+  - sendrecv(송신 정보, 수신 정보) 메서드를 사용해서 양방향 통신으로 수행한다.
+
+## Nonblocking Communications
+
+![Imgur](https://i.imgur.com/ejoW9zo.png)
+
+- S0, S1, S2, S3의 S는 Statement를 의미
+- R0에서 ISend 호출(S1) 후 R1으로부터의 응답이 필요없는 S2는 바로 실행 가능
+  - R1으로부터의 응답이 도착해야만 즉 R1으로부터의 응답을 사용하는 S3는 먼저 WAIT()을 호출해서 응답을 받을 때까지 실행되지 않음
+- Non-Blocking의 장점은 idle 타임을 줄일 수 있다는 것
+- Send/Recv 같은 Blocking 호출은 ISend/IRecv 같은 Non-Blocking 함수 호출후 바로 WAIT()를 호출한 케이스라고 볼 수도 있다.
+- Non-Blocking ISend는 Blocking Send와, IRecv는 Send와 짝 지어질 수도 있다.
+
+## Collective Communicatoins
+
+!
 
 
 
